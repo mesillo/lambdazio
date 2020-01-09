@@ -1,5 +1,0 @@
-{
-	"lambdaFile" : "main",
-	"lambdaHandler" : "handler",
-	"lambdaName" : "echo"
-}
