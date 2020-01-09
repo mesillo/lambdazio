@@ -1,0 +1,34 @@
+{
+  "name": "lambda2proc",
+  "version": "0.0.5",
+  "description": "node lambda handler runner",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Not yet implemented! :-(\" && exit 255"
+  },
+  "bin": {
+    "deployLambda": "./deployLambda.js",
+    "lambda2process": "./lambda2process.js"
+  },
+  "author": "Alberto Mesillo Mesin",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "aws-sdk": "^2.585.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mesillo/nodeLambda2process.git"
+  },
+  "keywords": [
+    "lambda",
+    "kinesis",
+    "nodejs",
+    "aws",
+    "local"
+  ],
+  "bugs": {
+    "url": "https://github.com/mesillo/nodeLambda2process/issues"
+  },
+  "homepage": "https://github.com/mesillo/nodeLambda2process#readme"
+}

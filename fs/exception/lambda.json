@@ -1,0 +1,5 @@
+{
+	"lambdaFile" : "main",
+	"lambdaHandler" : "handler",
+	"lambdaName" : "exception"
+}

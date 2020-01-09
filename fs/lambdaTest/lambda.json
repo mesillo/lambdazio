@@ -1,0 +1,5 @@
+{
+	"lambdaFile" : "singletontest",
+	"lambdaHandler" : "handler",
+	"lambdaName" : "lambdaTest"
+}
