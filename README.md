@@ -1,2 +1,2 @@
-# nodeLambda2process
-Local Node.js AWS Lambda (stupid) debug tool.
+# Lambdazio
+Local Node.js AWS Kinesis->Lambda (stupid) debug tool.
