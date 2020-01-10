@@ -29,6 +29,12 @@ let options = {
 	streamName : null,
 	lambdasStorage : configurations.lambdasStorage
 };
+
+if( process.env.hasOwnProperty( "LAMBDA_STORAGE" ) ) {
+	console.log( process.env.LAMBDA_STORAGE );
+	options.lambdasStorage = process.env.LAMBDA_STORAGE;
+}
+
 for( let i = 0  ; i < process.argv.length ; i++ ) {
 	switch( process.argv[ i ] ) {
 		case "--function-name":
@@ -36,6 +42,9 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			break;
 		case "--stream-name":
 			options.streamName = process.argv[++i];
+			break;
+		case "--lambda-storage":
+			options.lambdasStorage = process.argv[++i];
 			break;
 	}
 }

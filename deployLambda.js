@@ -69,6 +69,12 @@ let options = {
 	handler : "handler",
 	functionName : "zipFn"
 };
+
+if( process.env.hasOwnProperty( "LAMBDA_STORAGE" ) ) {
+	console.log( process.env.LAMBDA_STORAGE );
+	options.lbdfs = process.env.LAMBDA_STORAGE;
+}
+
 for( let i = 0  ; i < process.argv.length ; i++ ) {
 	switch( process.argv[ i ] ) {
 		case "--zip-file":
@@ -85,6 +91,9 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			break;
 		case "--name":
 			options.functionName = process.argv[++i];
+			break;
+		case "--lambda-storage":
+			options.lambdaFs = process.argv[++i];
 			break;
 	}
 }
