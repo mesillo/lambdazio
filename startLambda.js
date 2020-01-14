@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 "use strict";
 
 const configurations = require( "./etc/config.json" );
@@ -27,11 +26,11 @@ const runLambdaProcess = ( options ) => {
 let options = {
 	functionName : null,
 	streamName : null,
-	lambdasStorage : configurations.lambdasStorage
+	lambdasStorage : configurations.lambdaFs
 };
 
 if( process.env.hasOwnProperty( "LAMBDA_STORAGE" ) ) {
-	console.log( process.env.LAMBDA_STORAGE );
+	console.info( `Using lambda in ${process.env.LAMBDA_STORAGE}` );
 	options.lambdasStorage = process.env.LAMBDA_STORAGE;
 }
 

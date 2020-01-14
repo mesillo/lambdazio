@@ -3,10 +3,10 @@
 
 // Returns a standard Node.js HTTP server
 const kinesalite = require( "kinesalite" );
-
-const configurations = {
+const configurations = require( "./etc/config.json" );
+/*const configurations = {
     kinesaPort: 4567
-};
+};*/
 
 let kinesaliteServer = kinesalite( {
     path: "./mydb",

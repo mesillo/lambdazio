@@ -1,3 +1,5 @@
 {
-    "lambdasStorage": "./fs/"
+    "lambdaFs": "./fs/",
+	"lambdaConfigFile": "lambda.json",
+    "kinesaPort": 4567
 }

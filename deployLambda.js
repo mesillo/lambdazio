@@ -1,14 +1,13 @@
 #! /usr/bin/env node
 "use strict";
 
-//const Executor = require( "./includes/executor/executor" );
 const fs = require( "fs" );
 const unzipper = require( "unzipper" );
-
-let configurations = {
+const configurations = require( "./etc/config.json" );
+/*let configurations = {
 	lambdaFs : "./fs/",
 	lambdaConfigFile : "lambda.json"
-};
+};*/
 
 ///// Functions /////
 const createDestDir = async ( destDir ) => {
@@ -39,7 +38,6 @@ let createFs = ( config ) => {
 		createDestDir( destDir )
 			.then( async () => {
 				console.info( `Unzip ${config.zipName}.` );
-				//Executor.execute( unzipCommand )
 				unzipLambda( config.zipName, destDir )
 					.then( async ( streams ) => {
 						await createConfigJOSN( config, destDir );
@@ -92,7 +90,7 @@ let options = {
 };
 
 if( process.env.hasOwnProperty( "LAMBDA_STORAGE" ) ) {
-	console.log( process.env.LAMBDA_STORAGE );
+	console.info( `Using lambda in ${process.env.LAMBDA_STORAGE}` );
 	options.lbdfs = process.env.LAMBDA_STORAGE;
 }
 
