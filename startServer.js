@@ -12,11 +12,23 @@ let kinesaliteServer = kinesalite( {
 	path: __dirname + "/" + configurations.dfFs,
 	createStreamMs: 50
 } );
-
-kinesaliteServer.on( "request", () => console.info( "request" ) );
-kinesaliteServer.on( "connection", () => console.info( "connection" ) );
-
-// Listen on port 4567
+/*
+kinesaliteServer.on( "request", () => {
+	console.info( "request" );
+	console.dir(
+		arguments,
+		{ depth : null }
+	);
+} );
+kinesaliteServer.on( "connection", () => {
+	console.info( "connection" );
+	console.dir(
+		arguments,
+		{ depth : null }
+	);
+} );
+*/
+// Start Kinesalite.
 kinesaliteServer.listen( configurations.kinesaPort, ( error ) => {
 	if( error )
 		throw error;
