@@ -26,19 +26,9 @@ const createDestDir = async ( destDir ) => {
 let createFs = ( config ) => {
 	return new Promise( ( resolve, reject ) => {
 		let destDir = `${config.lbdfs}/${config.functionName}`;
-		//let mkdirCommand = `mkdir ${destDir}`;
 		let unzipCommand = `unzip -qq ${config.zipName} -d ${destDir}`;
-		//console.info( `Checking ${destDir}...` );
-		//if( fs.existsSync( destDir ) ) {
-		//	fs.rmdirSync( destDir );
-		//	console.info( "... removed!" );
-		//} else {
-		//	console.info( "... not exists!" );
-		//}
-		//console.info( `Creating ${destDir}.` );
-		//Executor.execute( mkdirCommand )
 		createDestDir( destDir )
-			.then( async ( /*streams*/ ) => {
+			.then( async () => {
 				console.info( `Unzip ${config.zipName}.` );
 				Executor.execute( unzipCommand )
 					.then( async ( streams ) => {
