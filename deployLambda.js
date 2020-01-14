@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 "use strict";
 
-const Executor = require( "./includes/executor/executor" );
+//const Executor = require( "./includes/executor/executor" );
 const fs = require( "fs" );
 const unzipper = require( "unzipper" );
 
