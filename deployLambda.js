@@ -3,6 +3,7 @@
 
 const Executor = require( "./includes/executor/executor" );
 const fs = require( "fs" );
+const unzipper = require( "unzipper" );
 
 let configurations = {
 	lambdaFs : "./fs/",
@@ -23,6 +24,14 @@ const createDestDir = async ( destDir ) => {
 	return true;
 };
 
+const unzipLambda = ( zipName, destDir ) => {
+	return fs.createReadStream( zipName ).pipe(
+		unzipper.Extract( {
+			path: destDir
+		} )
+	).promise();
+}
+
 let createFs = ( config ) => {
 	return new Promise( ( resolve, reject ) => {
 		let destDir = `${config.lbdfs}/${config.functionName}`;
@@ -30,7 +39,8 @@ let createFs = ( config ) => {
 		createDestDir( destDir )
 			.then( async () => {
 				console.info( `Unzip ${config.zipName}.` );
-				Executor.execute( unzipCommand )
+				//Executor.execute( unzipCommand )
+				unzipLambda( config.zipName, destDir )
 					.then( async ( streams ) => {
 						await createConfigJOSN( config, destDir );
 						console.info( "Done!" );

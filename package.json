@@ -13,7 +13,8 @@
   "author": "Alberto Mesillo Mesin",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "aws-sdk": "^2.585.0"
+    "aws-sdk": "^2.585.0",
+    "unzipper": "^0.10.5"
   },
   "devDependencies": {},
   "repository": {
