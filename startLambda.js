@@ -26,7 +26,7 @@ const runLambdaProcess = ( options ) => {
 let options = {
 	functionName : null,
 	streamName : null,
-	lambdasStorage : configurations.lambdaFs
+	lambdasStorage : __dirname + "/" + configurations.lambdaFs
 };
 
 if( process.env.hasOwnProperty( "LAMBDA_STORAGE" ) ) {

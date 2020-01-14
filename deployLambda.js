@@ -13,7 +13,10 @@ const configurations = require( "./etc/config.json" );
 const createDestDir = async ( destDir ) => {
 	console.info( `Checking ${destDir}...` );
 	if( fs.existsSync( destDir ) ) {
-		fs.rmdirSync( destDir );
+		fs.rmdirSync(
+			destDir,
+			{ recursive : true }
+		);
 		console.info( "... removed!" );
 	} else {
 		console.info( "... not exists!" );
@@ -71,7 +74,7 @@ let createConfigJOSN = async ( config, destDir ) => {
 let addLambdaDirectory = async ( options ) => {
 	if( options.zipName ) {
 		if( ! options.lbdfs ) {
-			options.lbdfs = configurations.lambdaFs;
+			options.lbdfs = __dirname + "/" + configurations.lambdaFs;
 		}
 		// TODO: checks on zip file...
 		// TODO: checks on function name...

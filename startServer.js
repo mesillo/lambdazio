@@ -5,12 +5,12 @@
 const kinesalite = require( "kinesalite" );
 const configurations = require( "./etc/config.json" );
 /*const configurations = {
-    kinesaPort: 4567
+		kinesaPort: 4567
 };*/
 
 let kinesaliteServer = kinesalite( {
-    path: "./mydb",
-    createStreamMs: 50
+	path: __dirname + "/" + configurations.dfFs,
+	createStreamMs: 50
 } );
 
 kinesaliteServer.on( "request", () => console.info( "request" ) );
@@ -18,7 +18,7 @@ kinesaliteServer.on( "connection", () => console.info( "connection" ) );
 
 // Listen on port 4567
 kinesaliteServer.listen( configurations.kinesaPort, ( error ) => {
-  if( error )
-    throw error;
-  console.info( `Kinesalite started on port ${configurations.kinesaPort}.` );
+	if( error )
+		throw error;
+	console.info( `Kinesalite started on port ${configurations.kinesaPort}.` );
 } );

@@ -1,6 +1,6 @@
 {
   "name": "lambdazio",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "node lambda handler runner",
   "main": "app.js",
   "scripts": {
@@ -8,7 +8,8 @@
   },
   "bin": {
     "deployLambda": "./deployLambda.js",
-    "startLambda": "./startLambda.js"
+    "startLambda": "./startLambda.js",
+    "lambdazioServer": "./startServer.js"
   },
   "author": "Alberto Mesillo Mesin",
   "license": "GPL-3.0-or-later",
