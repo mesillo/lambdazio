@@ -10,14 +10,35 @@ let configurations = {
 };
 
 ///// Functions /////
+const createDestDir = async ( destDir ) => {
+	console.info( `Checking ${destDir}...` );
+	if( fs.existsSync( destDir ) ) {
+		fs.rmdirSync( destDir );
+		console.info( "... removed!" );
+	} else {
+		console.info( "... not exists!" );
+	}
+	console.info( `Creating ${destDir}.` );
+	fs.mkdirSync( destDir );
+	return true;
+};
+
 let createFs = ( config ) => {
 	return new Promise( ( resolve, reject ) => {
 		let destDir = `${config.lbdfs}/${config.functionName}`;
-		let mkdirCommand = `mkdir ${destDir}`;
+		//let mkdirCommand = `mkdir ${destDir}`;
 		let unzipCommand = `unzip -qq ${config.zipName} -d ${destDir}`;
-		console.info( `Creating ${destDir}.` );
-		Executor.execute( mkdirCommand )
-			.then( async ( streams ) => {
+		//console.info( `Checking ${destDir}...` );
+		//if( fs.existsSync( destDir ) ) {
+		//	fs.rmdirSync( destDir );
+		//	console.info( "... removed!" );
+		//} else {
+		//	console.info( "... not exists!" );
+		//}
+		//console.info( `Creating ${destDir}.` );
+		//Executor.execute( mkdirCommand )
+		createDestDir( destDir )
+			.then( async ( /*streams*/ ) => {
 				console.info( `Unzip ${config.zipName}.` );
 				Executor.execute( unzipCommand )
 					.then( async ( streams ) => {
