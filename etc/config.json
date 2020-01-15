@@ -2,5 +2,6 @@
 	"lambdaFs": "./fs/",
 	"dfFs": "mydb",
 	"lambdaConfigFile": "lambda.json",
-	"kinesaPort": 4567
+	"kinesaPort": 4567,
+	"apiPort": 7654
 }
