@@ -6,9 +6,8 @@ const BatchTransformer = require( "../batchTransformer/batchtransformer" );
 const fs = require( "fs" );
 const unzipper = require( "unzipper" );
 
-const configurations = require( "./etc/config.json" ); // TODO: get rid of this...
+const configurations = require( "../../etc/config.json" ); // TODO: get rid of this...
 //TODO: omogenize options...
-
 
 class Lambda {
     //// Running a Lambda Process ////
@@ -47,16 +46,12 @@ class Lambda {
      * } options 
      */
     static async addLambdaDirectory( options ) {
-        if( options.zipName ) {
-            if( ! options.lbdfs ) {
-                options.lbdfs = __dirname + "/" + configurations.lambdaFs;
-            }
-            // TODO: checks on zip file...
-            // TODO: checks on function name...
+        if( options.zipName && options.lbdfs ) {
             await Lambda._createFs( options );
-        }// else {
-        //	TODO: print error message...
-        //}
+        } else {
+            console.error( "Necessary parameters not provided. Nothing to Execute." );
+            process.exit( -1 );
+        }
     }
 
     static async _createDestDir( destDir ) {

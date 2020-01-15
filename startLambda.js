@@ -2,26 +2,8 @@
 "use strict";
 
 const configurations = require( "./etc/config.json" );
-const L2P = require( "./includes/l2p/l2p" );
-const KinesaStream = require( "./includes/kinesalite/kinesaliteStreamClient" );
-const BatchTransformer = require( "./includes/batchTransformer/batchtransformer" );
 
-const runLambdaProcess = ( options ) => {
-	let lambda = new L2P( options );
-	let stream = new KinesaStream( options.streamName );
-	let batchTransformer = new BatchTransformer();
-	let kinesisHandler = async ( records ) => {
-		let event = batchTransformer.toKinesisEvent( records );
-		let context = batchTransformer.getContext();
-		try {
-			await lambda.invoke( event, context );
-		} catch( error ) {
-			console.error( error );
-			process.exit( -1 );
-		}
-	};
-	stream.read( kinesisHandler );
-};
+const Lambda = require( "./includes/lambda/lambda" );
 
 let options = {
 	functionName : null,
@@ -48,4 +30,4 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 	}
 }
 ///// Main Task /////
-runLambdaProcess( options );
+Lambda.runLambdaProcess( options );
