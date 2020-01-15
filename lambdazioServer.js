@@ -4,30 +4,12 @@
 // Returns a standard Node.js HTTP server
 const kinesalite = require( "kinesalite" );
 const configurations = require( "./etc/config.json" );
-/*const configurations = {
-		kinesaPort: 4567
-};*/
 
 let kinesaliteServer = kinesalite( {
 	path: __dirname + "/" + configurations.dfFs,
 	createStreamMs: 50
 } );
-/*
-kinesaliteServer.on( "request", () => {
-	console.info( "request" );
-	console.dir(
-		arguments,
-		{ depth : null }
-	);
-} );
-kinesaliteServer.on( "connection", () => {
-	console.info( "connection" );
-	console.dir(
-		arguments,
-		{ depth : null }
-	);
-} );
-*/
+
 // Start Kinesalite.
 kinesaliteServer.listen( configurations.kinesaPort, ( error ) => {
 	if( error )

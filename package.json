@@ -9,7 +9,7 @@
   "bin": {
     "deployLambda": "./deployLambda.js",
     "startLambda": "./startLambda.js",
-    "lambdazioServer": "./startServer.js"
+    "lambdazioServer": "./lambdazioServer.js"
   },
   "author": "Alberto Mesillo Mesin",
   "license": "GPL-3.0-or-later",
