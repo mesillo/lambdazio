@@ -4,10 +4,6 @@
 const fs = require( "fs" );
 const unzipper = require( "unzipper" );
 const configurations = require( "./etc/config.json" );
-/*let configurations = {
-	lambdaFs : "./fs/",
-	lambdaConfigFile : "lambda.json"
-};*/
 
 ///// Functions /////
 const createDestDir = async ( destDir ) => {
