@@ -23,6 +23,8 @@ class ApiServer {
 		let paramsArray = request.url.split( "/" );
 		while( paramsArray[0] === "" )
 			paramsArray.shift();
+		while( paramsArray[ paramsArray.length - 1 ] === "" )
+			paramsArray.pop();
 		return paramsArray;
 	}
 
@@ -31,6 +33,25 @@ class ApiServer {
 		responseBody.status = 200;
 		responseBody.response = await this.kinesa.listStreams();
 		return responseBody;
+	}
+
+	async _describeStream( responseBody ) {
+		responseBody.action = "describeStream";
+		return new Promise( ( resolve, reject ) => {
+			let streamName = responseBody.parameters[1];
+			this.kinesa.describeStream( streamName )
+			.then( ( result ) => {
+				responseBody.status = 200;
+				responseBody.response = result;
+				resolve( responseBody );
+			} )
+			.catch( ( error ) => {
+				responseBody.status = 500;
+				responseBody.error = error.message;
+				console.error( error );
+				resolve( responseBody );
+			} );
+		} );
 	}
 
 	async _createStream( responseBody ) {
@@ -92,6 +113,9 @@ class ApiServer {
 				break;
 			case "deleteStream":
 				await this._deleteStream( responseBody );
+				break;
+			case "describeStream":
+				await this._describeStream( responseBody );
 				break;
 			default:
 		}
