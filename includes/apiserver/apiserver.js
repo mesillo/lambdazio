@@ -100,9 +100,29 @@ class ApiServer {
 		} );
 	}
 
+	async _writeStream( responseBody ) {
+		responseBody.action = "deleteStream";
+		return new Promise( ( resolve, reject ) => {
+			let streamName = responseBody.parameters[1];
+			this.kinesa.deleteStream( streamName )
+			.then( ( result ) => {
+				responseBody.status = 200;
+				responseBody.response = result;
+				resolve( responseBody );
+			} )
+			.catch( ( error ) => {
+				responseBody.status = 500;
+				responseBody.error = error.message;
+				console.error( error );
+				resolve( responseBody );
+			} );
+		} );
+	}
+
 	async _managePost( request, response ) {
 		let responseBody = {
 			parameters: this._getPostUrl( request ),
+			body: null,
 			action: null,
 			status: 500,
 			response: null,
@@ -132,6 +152,7 @@ class ApiServer {
 	async _manageGet( request, response ) {
 		let responseBody = {
 			parameters: this._getGetUrl( request ),
+			body: null,
 			action: null,
 			status: 500,
 			response: "",
