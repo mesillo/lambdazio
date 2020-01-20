@@ -28,6 +28,18 @@ class ApiServer {
 		return paramsArray;
 	}
 
+	_getPostBody( request ) {
+		return new Promise( ( resolve, reject ) => {
+			let bodyContent = "";
+			request.on( "data", ( chunk ) => {
+				bodyContent += chunk.toString();
+			} );
+			request.on( "end", () => {
+				resolve( bodyContent );
+			} );
+		} );
+	}
+
 	_getGetUrl( request ) {
 		return this._getPostUrl( request );
 	}
@@ -101,10 +113,16 @@ class ApiServer {
 	}
 
 	async _writeStream( responseBody ) {
-		responseBody.action = "deleteStream";
+		responseBody.action = "writeStream";
 		return new Promise( ( resolve, reject ) => {
 			let streamName = responseBody.parameters[1];
-			this.kinesa.deleteStream( streamName )
+			let partitonKey = responseBody.parameters[2];
+			let data = responseBody.body;
+			this.kinesa.writeStream(
+				streamName,
+				data,
+				partitonKey,
+			)
 			.then( ( result ) => {
 				responseBody.status = 200;
 				responseBody.response = result;
@@ -122,7 +140,7 @@ class ApiServer {
 	async _managePost( request, response ) {
 		let responseBody = {
 			parameters: this._getPostUrl( request ),
-			body: null,
+			body: await this._getPostBody( request ),
 			action: null,
 			status: 500,
 			response: null,
@@ -140,6 +158,9 @@ class ApiServer {
 				break;
 			case "describeStream":
 				await this._describeStream( responseBody );
+				break;
+			case "writeStream":
+				await this._writeStream( responseBody );
 				break;
 			default:
 		}
