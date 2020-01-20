@@ -19,13 +19,17 @@ class ApiServer {
 		console.info( `ApiServer listen on ${this.port}.` );
 	}
 
-	_getGetUrl( request ) {
+	_getPostUrl( request ) {
 		let paramsArray = request.url.split( "/" );
 		while( paramsArray[0] === "" )
 			paramsArray.shift();
 		while( paramsArray[ paramsArray.length - 1 ] === "" )
 			paramsArray.pop();
 		return paramsArray;
+	}
+
+	_getGetUrl( request ) {
+		return this._getPostUrl( request );
 	}
 
 	async _listStreams( responseBody ) {
@@ -96,9 +100,9 @@ class ApiServer {
 		} );
 	}
 
-	async _manageGet( request, response ) {
+	async _managePost( request, response ) {
 		let responseBody = {
-			parameters: this._getGetUrl( request ),
+			parameters: this._getPostUrl( request ),
 			action: null,
 			status: 500,
 			response: null,
@@ -125,15 +129,66 @@ class ApiServer {
 		response.write( JSON.stringify( responseBody ) );
 	}
 
+	async _manageGet( request, response ) {
+		let responseBody = {
+			parameters: this._getGetUrl( request ),
+			action: null,
+			status: 500,
+			response: "",
+			error: null
+		};
+		if( responseBody.parameters.length === 0 )
+			responseBody.parameters.push( "home" );
+		switch( responseBody.parameters[0] ) {
+			case "home":
+			default:
+				responseBody.status = 200;
+				responseBody.action = "HOME";
+		}
+		response.statusCode = responseBody.status;
+		response.setHeader( "Content-Type", "text/html" );
+		let render = new Render( responseBody );
+		//response.setHeader( "Cache-Control", "no-store" );
+		response.write(
+			render.getHtmlHeader() +
+			render.getHtmlBody() +
+			render.getHtmlFooter()
+		);
+	}
+
 	async _requestManager( request, response ) {
 		switch( request.method ) {
+			case "POST":
+				await this._managePost( request, response );
+				break;
 			case "GET":
 				await this._manageGet( request, response );
 				break;
 			default:
-				console.log( "Default" );
+				console.error( "Unmanaged Method " + request.method );
 		}
 		response.end();
+	}
+}
+
+class Render {
+	constructor( responseBody ) {
+		if( ! responseBody )
+			throw new Error( "Constructor need a responseBody!" );
+		this.responseBody = responseBody;
+	}
+
+	getHtmlHeader() {
+		return `<!DOCTYPE html>\n<html>\n<head><title>Lambdazio - ${this.responseBody.action}</title></head>\n`;
+	}
+
+	getHtmlBody() {
+		let bodyBuffer = this.responseBody.response;
+		return `<body>\n${bodyBuffer}</body>\n`;
+	}
+
+	getHtmlFooter() {
+		return "</html>";
 	}
 }
 
