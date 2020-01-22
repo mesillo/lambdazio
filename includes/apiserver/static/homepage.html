@@ -12,9 +12,27 @@
 				console.dir( data );
 				let outputZone = document.getElementById( "streamsTable" );
 				outputZone.innerHTML = "";
+				let output = "<table>";
 				for( streamName of data.response ) {
-					outputZone.innerHTML += `<b>${streamName}</b><button onclick="deleteStream('${streamName}')">Delete</button><br/>`;
+					output += `<tr><td><b>${streamName}</b></td><td><button onclick="deleteStream('${streamName}')">Delete</button></td><td><button onclick="describeStream('${streamName}')">Describe</button></td><td><button onclick="selectStream('${streamName}')">Select</button></td></tr>`;
 				}
+				output += "</table>";
+				outputZone.innerHTML = output;
+			}
+			const describeStream = ( streamName ) => {
+				console.info( "=== describeStream ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", `describeStream/${streamName}`, false );
+				xhr.send();
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+				let outputZone = document.getElementById( "outputZone" );
+				outputZone.innerHTML = "";
+				let output = "<pre>";
+				output += xhr.responseText;
+				//output += data;
+				output += "</pre>";
+				outputZone.innerHTML = output;
 			}
 			const deleteStream = ( streamName ) => {
 				console.info( "=== deleteStream ===" );
@@ -37,6 +55,14 @@
 				console.dir( data );
 				listStreams();
 			}
+			const writeStream = ( streamName, shardKey, inputData ) => {
+				console.info( "=== writeStream ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", `writeStream/${streamName}/${shardKey}`, false );
+				xhr.send( inputData );
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+			}
 			const createStreamForm = () => {
 				//console.info( "=== createStreamForm ===" );
 				let streamName = document.getElementById( "streamName" ).value;
@@ -44,6 +70,20 @@
 				if( streamName !== "" && shardNum !== "" ) {
 					createStream( streamName, shardNum );
 				}
+			}
+			const writeForm = () => {
+				//console.info( "=== writeForm ===" );
+				let streamName = document.getElementById( "writeStreamName" ).value;
+				let shardingKey = document.getElementById( "writeShardKey" ).value;
+				let data = document.getElementById( "writeData" ).value;
+				if( streamName !== "" && shardingKey !== "" && data !== "" ) {
+					//console.log( streamName, shardingKey, data );
+					writeStream( streamName, shardingKey, data );
+				}
+			}
+			const selectStream = ( streamName ) => {
+				console.info( "=== selectStream ===" );
+				document.getElementById( "writeStreamName" ).value = streamName;
 			}
 			window.addEventListener( "DOMContentLoaded", ( event ) => {
 				listStreams();
@@ -65,6 +105,19 @@
 		<hr>
 		<div id="streamsTable">
 			... loading...
+		</div>
+		<hr>
+		<div id="writeForm">
+			<label for="writeStreamName">Stream Name</label>
+			<input type="text" name="writeStreamName" id="writeStreamName">
+			<label for="writeShardKey">Sharding Key</label>
+			<input type="text" name="writeShardKey" id="writeShardKey" value="ShardKey-001">
+			<button onclick="writeForm()">Insert</button>
+			<br/><label for="writeShardKey">Data:</label><br/>
+			<textarea name="writeData" id="writeData"></textarea>
+		</div>
+		<hr>
+		<div id="outputZone">
 		</div>
 	</body>
 </html>
