@@ -1,6 +1,7 @@
 "use strict";
 
 const http = require( "http" );
+const fs = require( "fs" );
 const kinesaliteClient = require( "../kinesalite/kinesaliteClient" );
 
 const configurations = require( "../../etc/config.json" );
@@ -182,20 +183,22 @@ class ApiServer {
 		if( responseBody.parameters.length === 0 )
 			responseBody.parameters.push( "home" );
 		switch( responseBody.parameters[0] ) {
-			case "home":
 			default:
+				//responseBody.parameters[1] = "homepage.html";
 				responseBody.status = 200;
-				responseBody.action = "HOME";
+				responseBody.action = "static";
 		}
+		responseBody = Render.getResponseBuffer( responseBody );
 		response.statusCode = responseBody.status;
 		response.setHeader( "Content-Type", "text/html" );
-		let render = new Render( responseBody );
+		response.write( responseBody.response );
+		//let render = new Render( responseBody );
 		//response.setHeader( "Cache-Control", "no-store" );
-		response.write(
+		/*response.write(
 			render.getHtmlHeader() +
 			render.getHtmlBody() +
 			render.getHtmlFooter()
-		);
+		);*/
 	}
 
 	async _requestManager( request, response ) {
@@ -214,24 +217,33 @@ class ApiServer {
 }
 
 class Render {
-	constructor( responseBody ) {
+	/*constructor( responseBody ) {
 		if( ! responseBody )
 			throw new Error( "Constructor need a responseBody!" );
 		this.responseBody = responseBody;
+	}*/
+	static getResponseBuffer( responseBody ) {
+		if( responseBody.action === "static" ) {
+			let filename =  __dirname + "/static/" + ( responseBody.parameters[1] ? responseBody.parameters[1] : "homepage.html" ); // TODO: use a define... 
+			if( ! fs.existsSync( filename ) ) {
+				console.error( "Unable to find: " + filename );
+				responseBody.status = 404;
+				filename = __dirname + "/static/404.html";
+			}
+			responseBody.response = fs.readFileSync( filename ).toString();
+		}
+		return responseBody;
 	}
-
-	getHtmlHeader() {
+	/*getHtmlHeader() {
 		return `<!DOCTYPE html>\n<html>\n<head><title>Lambdazio - ${this.responseBody.action}</title></head>\n`;
 	}
-
 	getHtmlBody() {
 		let bodyBuffer = this.responseBody.response;
 		return `<body>\n${bodyBuffer}</body>\n`;
 	}
-
 	getHtmlFooter() {
 		return "</html>";
-	}
+	}*/
 }
 
 module.exports = ApiServer;

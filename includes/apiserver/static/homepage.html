@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Lambdazio</title>
+		<script>
+			const listStreams = () => {
+				console.info( "=== listStreams ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", "listStreams", false );
+				xhr.send();
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+				let outputZone = document.getElementById( "streamsTable" );
+				outputZone.innerHTML = "";
+				for( streamName of data.response ) {
+					outputZone.innerHTML += `<b>${streamName}</b><button onclick="deleteStream('${streamName}')">Delete</button><br/>`;
+				}
+			}
+			const deleteStream = ( streamName ) => {
+				console.info( "=== deleteStream ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", `deleteStream/${streamName}`, false );
+				xhr.send();
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+				setTimeout(
+					listStreams,
+					1000
+				);
+			}
+			const createStream = ( streamName, shardNum ) => {
+				console.info( "=== createStream ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", `createStream/${streamName}/${shardNum}`, false );
+				xhr.send();
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+				listStreams();
+			}
+			const createStreamForm = () => {
+				//console.info( "=== createStreamForm ===" );
+				let streamName = document.getElementById( "streamName" ).value;
+				let shardNum = document.getElementById( "shardNum" ).value;
+				if( streamName !== "" && shardNum !== "" ) {
+					createStream( streamName, shardNum );
+				}
+			}
+			window.addEventListener( "DOMContentLoaded", ( event ) => {
+				listStreams();
+				setInterval(
+					listStreams,
+					30000
+				);
+			} );
+		</script>
+	</head>
+	<body>
+		<div id="createStreamForm">
+			<label for="streamName">Stream Name</label>
+			<input type="text" name="streamName" id="streamName">
+			<label for="shardNum">Shard Num</label>
+			<input type="number" name="shardNum" id="shardNum" min="1" max="10">
+			<button onclick="createStreamForm()">Create</button>
+		</div>
+		<hr>
+		<div id="streamsTable">
+			... loading...
+		</div>
+	</body>
+</html>
