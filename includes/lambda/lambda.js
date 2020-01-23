@@ -21,7 +21,7 @@ class Lambda {
 	static runLambdaProcess ( options ) {
 		let lambda = new L2P( options );
 		let stream = new KinesaStream( options.streamName );
-		let batchTransformer = new BatchTransformer();
+		let batchTransformer = new BatchTransformer( options.streamName );
 		let kinesisHandler = async ( records ) => {
 			let event = batchTransformer.toKinesisEvent( records );
 			let context = batchTransformer.getContext();

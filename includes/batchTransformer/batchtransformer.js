@@ -37,6 +37,24 @@ const baseRecordStruct = JSON.stringify( {
 } );
 
 class BatchTranformer {
+	getContext() {
+		let returnValue = JSON.parse( defaultContext );
+		returnValue.functionName = this._functionName;
+		returnValue.logGroupName = "/aws/lambda/" + this._functionName;
+		returnValue.invokedFunctionArn = "arn:aws:lambda:eu-central-1:102165533286:function:" + this._functionName;
+		returnValue.awsRequestId = this._getExecutionId();
+		return returnValue;
+	}
+
+	constructor( functionName ) {
+		this._executionId = 0;
+		this._functionName = functionName;
+	}
+
+	_getExecutionId() { // TODO: get more similar to UUID... '00000000-0000-0000-0000-000000000000'
+		return "00000000-0000-0000-0000-" + ( ( ++ this._executionId ).toString( 16 ) );
+	}
+
 	toKinesisEvent( records ) {
 		let LRecords = [];
 		for( let kinesisRecord of records.Records ) {
@@ -62,10 +80,6 @@ class BatchTranformer {
 		lambdaRecord.kinesis.data = kinesisRecord.Data.toString( "base64" ); //TODO: Check format??
 		lambdaRecord.kinesis.sequenceNumber = kinesisRecord.SequenceNumber;
 		return lambdaRecord;
-	}
-
-	getContext() {
-		return JSON.parse( defaultContext );
 	}
 
 	_getRecordStructure( recordsArray ) {
