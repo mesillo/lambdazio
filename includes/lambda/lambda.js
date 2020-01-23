@@ -28,7 +28,7 @@ class Lambda {
 			try {
 				await lambda.invoke( event, context );
 			} catch( error ) {
-				console.error( error );
+				//console.error( error );
 				process.exit( -1 );
 			}
 		};
