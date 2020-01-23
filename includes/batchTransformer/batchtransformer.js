@@ -32,7 +32,9 @@ const baseRecordStruct = JSON.stringify( {
 		//data: 'eyJ2YWx1ZSI6IjE4ID0+IFJhbmQ6IDYifQ==',
 		data: '00',
 		//sequenceNumber: '49595160041073623401520312716573683571199835999744032770'
-		sequenceNumber: '00000000000000000000000000000000000000000000000000000000'
+		sequenceNumber: '00000000000000000000000000000000000000000000000000000000',
+		//approximateArrivalTimestamp: 1428537600
+		approximateArrivalTimestamp: 1
 	}
 } );
 
