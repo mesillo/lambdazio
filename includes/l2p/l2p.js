@@ -21,8 +21,8 @@ class Lambda2Process {
 		this._executionId = 0;
 	}
 
-	_getExecutionId() { // TODO: get more similar to UUID...
-		return ( ++ this._executionId ).toString( 16 );
+	_getExecutionId( context ) {
+		return context.awsRequestId;
 	}
 
 	_changeCWD() {
@@ -75,7 +75,7 @@ class Lambda2Process {
 
 	async invoke( event, context ) {
 		let lastError = null;
-		let executionId = this._getExecutionId();
+		let executionId = this._getExecutionId( context );
 		let startTime = new Date().getTime();
 		for( let leftRetries = INVOKE_RETRY ; leftRetries ; leftRetries-- ) {
 			try {

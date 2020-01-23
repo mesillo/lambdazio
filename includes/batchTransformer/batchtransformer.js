@@ -77,8 +77,13 @@ class BatchTranformer {
 	_convertRecord( kinesisRecord ) {
 		let lambdaRecord = JSON.parse( baseRecordStruct );
 		lambdaRecord.kinesis.partitionKey = kinesisRecord.PartitionKey;
+
 		lambdaRecord.kinesis.data = kinesisRecord.Data.toString( "base64" ); //TODO: Check format??
 		lambdaRecord.kinesis.sequenceNumber = kinesisRecord.SequenceNumber;
+
+		lambdaRecord.eventSourceARN = "arn:aws:kinesis:us-east-1:000000000000:stream/" + this._functionName;
+		lambdaRecord.eventID = "shardId-000000000000:" + kinesisRecord.SequenceNumber;
+
 		return lambdaRecord;
 	}
 
