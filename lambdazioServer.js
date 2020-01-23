@@ -3,6 +3,7 @@
 
 const ApiServer = require( "./includes/apiserver/apiserver" );
 const kinesalite = require( "kinesalite" );
+// const Utils = require( "./includes/utils" ); // TODO: remove...
 
 const configurations = require( "./etc/config.json" );
 
@@ -12,7 +13,9 @@ let kinesaliteServer = kinesalite( {
 } );
 
 let apiServer = new ApiServer();
-
+/// TEST /// // TODO: remove...
+// kinesaliteServer.on( "connection", Utils.dirArguments );
+////////////
 // Start Kinesalite.
 kinesaliteServer.listen( configurations.kinesaPort, ( error ) => {
 	if( error )
