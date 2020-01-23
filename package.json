@@ -1,6 +1,6 @@
 {
-  "name": "lambda2proc",
-  "version": "0.0.5",
+  "name": "lambdazio",
+  "version": "0.1.0",
   "description": "node lambda handler runner",
   "main": "app.js",
   "scripts": {
@@ -8,17 +8,20 @@
   },
   "bin": {
     "deployLambda": "./deployLambda.js",
-    "lambda2process": "./lambda2process.js"
+    "startLambda": "./startLambda.js",
+    "lambdazioServer": "./lambdazioServer.js"
   },
   "author": "Alberto Mesillo Mesin",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "aws-sdk": "^2.585.0"
+    "aws-sdk": "^2.585.0",
+    "kinesalite": "^3.3.0",
+    "unzipper": "^0.10.5"
   },
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mesillo/nodeLambda2process.git"
+    "url": "git+https://github.com/mesillo/lambdazio.git"
   },
   "keywords": [
     "lambda",
@@ -28,7 +31,7 @@
     "local"
   ],
   "bugs": {
-    "url": "https://github.com/mesillo/nodeLambda2process/issues"
+    "url": "https://github.com/mesillo/lambdazio/issues"
   },
-  "homepage": "https://github.com/mesillo/nodeLambda2process#readme"
+  "homepage": "https://github.com/mesillo/lambdazio#readme"
 }

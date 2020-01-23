@@ -18,6 +18,11 @@ class Lambda2Process {
 		this._initLambdaContext();
 		this._changeCWD();
 		this.handler = this._getHandler();
+		this._executionId = 0;
+	}
+
+	_getExecutionId() { // TODO: get more similar to UUID...
+		return ( ++ this._executionId ).toString( 16 );
 	}
 
 	_changeCWD() {
@@ -70,19 +75,27 @@ class Lambda2Process {
 
 	async invoke( event, context ) {
 		let lastError = null;
+		let executionId = this._getExecutionId();
+		let startTime = new Date().getTime();
 		for( let leftRetries = INVOKE_RETRY ; leftRetries ; leftRetries-- ) {
 			try {
+				console.log( `START RequestId: ${executionId} Version: $LATEST` );
 				return await this.handler.call(
 					this.lambdaContext,
 					event,
 					context
 				);
-			} catch( error ) { //TODO: design better better...
-				//console.dir( error, { depth : null } );
+			} catch( error ) { //TODO: design better better... if possible...
 				lastError = error;
-				//console.error( error );
+				console.log( `RequestId: ${executionId} Error: ${error.message}` );
 				await this._retryInvokeSleep();
-				//continue;
+			} finally {
+				let duration = ( new Date().getTime() ) - startTime;
+				let memory = process.memoryUsage();
+				let memorySize = Math.round( memory.heapTotal / 1024 / 1024 * 100 ) / 100; // TODO: Move this conversion to Utils...
+				let memoryUsed = Math.round( memory.heapUsed / 1024 / 1024 * 100 ) / 100;
+				console.log( `END RequestId: ${executionId}` );
+				console.log( `REPORT RequestId: ${executionId}	Duration: ${duration} ms	Billed Duration: ${duration} ms	Memory Size: ${memorySize} MB	Max Memory Used: ${memoryUsed} MB` );
 			}
 		}
 		throw lastError;
