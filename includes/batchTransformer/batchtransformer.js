@@ -103,6 +103,7 @@ class BatchTranformer {
 
 		lambdaRecord.eventSourceARN = "arn:aws:kinesis:us-east-1:000000000000:stream/" + this._functionName;
 		lambdaRecord.eventID = "shardId-000000000000:" + kinesisRecord.SequenceNumber;
+		lambdaRecord.kinesis.approximateArrivalTimestamp = kinesisRecord.ApproximateArrivalTimestamp;
 
 		return lambdaRecord;
 	}
