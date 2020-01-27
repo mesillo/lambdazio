@@ -1,3 +1,21 @@
+//this file contain bugs
+/**
+ * This file is part of Lambdazio.
+ * Copyright (C) yyyy  Alberto Mesillo Mesin
+ * Lambdazio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * Lambdazio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 "use strict";
 
 const fs = require( "fs" );
@@ -21,8 +39,8 @@ class Lambda2Process {
 		this._executionId = 0;
 	}
 
-	_getExecutionId() { // TODO: get more similar to UUID...
-		return ( ++ this._executionId ).toString( 16 );
+	_getExecutionId( context ) {
+		return context.awsRequestId;
 	}
 
 	_changeCWD() {
@@ -75,7 +93,7 @@ class Lambda2Process {
 
 	async invoke( event, context ) {
 		let lastError = null;
-		let executionId = this._getExecutionId();
+		let executionId = this._getExecutionId( context );
 		let startTime = new Date().getTime();
 		for( let leftRetries = INVOKE_RETRY ; leftRetries ; leftRetries-- ) {
 			try {

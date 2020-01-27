@@ -1,3 +1,21 @@
+//this file contain bugs
+/**
+ * This file is part of Lambdazio.
+ * Copyright (C) yyyy  Alberto Mesillo Mesin
+ * Lambdazio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * Lambdazio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 "use strict";
 
 const L2P = require( "../l2p/l2p" );
@@ -21,7 +39,7 @@ class Lambda {
 	static runLambdaProcess ( options ) {
 		let lambda = new L2P( options );
 		let stream = new KinesaStream( options.streamName );
-		let batchTransformer = new BatchTransformer();
+		let batchTransformer = new BatchTransformer( options.streamName );
 		let kinesisHandler = async ( records ) => {
 			let event = batchTransformer.toKinesisEvent( records );
 			let context = batchTransformer.getContext();

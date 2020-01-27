@@ -1,3 +1,21 @@
+//this file contain bugs
+/**
+ * This file is part of Lambdazio.
+ * Copyright (C) yyyy  Alberto Mesillo Mesin
+ * Lambdazio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * Lambdazio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 "use strict";
 
 const defaultContext = JSON.stringify( {
@@ -32,11 +50,31 @@ const baseRecordStruct = JSON.stringify( {
 		//data: 'eyJ2YWx1ZSI6IjE4ID0+IFJhbmQ6IDYifQ==',
 		data: '00',
 		//sequenceNumber: '49595160041073623401520312716573683571199835999744032770'
-		sequenceNumber: '00000000000000000000000000000000000000000000000000000000'
+		sequenceNumber: '00000000000000000000000000000000000000000000000000000000',
+		//approximateArrivalTimestamp: 1428537600
+		approximateArrivalTimestamp: 1
 	}
 } );
 
 class BatchTranformer {
+	getContext() {
+		let returnValue = JSON.parse( defaultContext );
+		returnValue.functionName = this._functionName;
+		returnValue.logGroupName = "/aws/lambda/" + this._functionName;
+		returnValue.invokedFunctionArn = "arn:aws:lambda:eu-central-1:102165533286:function:" + this._functionName;
+		returnValue.awsRequestId = this._getExecutionId();
+		return returnValue;
+	}
+
+	constructor( functionName ) {
+		this._executionId = 0;
+		this._functionName = functionName;
+	}
+
+	_getExecutionId() { // TODO: get more similar to UUID... '00000000-0000-0000-0000-000000000000'
+		return "00000000-0000-0000-0000-" + ( ( ++ this._executionId ).toString( 16 ) );
+	}
+
 	toKinesisEvent( records ) {
 		let LRecords = [];
 		for( let kinesisRecord of records.Records ) {
@@ -59,13 +97,15 @@ class BatchTranformer {
 	_convertRecord( kinesisRecord ) {
 		let lambdaRecord = JSON.parse( baseRecordStruct );
 		lambdaRecord.kinesis.partitionKey = kinesisRecord.PartitionKey;
+
 		lambdaRecord.kinesis.data = kinesisRecord.Data.toString( "base64" ); //TODO: Check format??
 		lambdaRecord.kinesis.sequenceNumber = kinesisRecord.SequenceNumber;
-		return lambdaRecord;
-	}
 
-	getContext() {
-		return JSON.parse( defaultContext );
+		lambdaRecord.eventSourceARN = "arn:aws:kinesis:us-east-1:000000000000:stream/" + this._functionName;
+		lambdaRecord.eventID = "shardId-000000000000:" + kinesisRecord.SequenceNumber;
+		lambdaRecord.kinesis.approximateArrivalTimestamp = kinesisRecord.ApproximateArrivalTimestamp;
+
+		return lambdaRecord;
 	}
 
 	_getRecordStructure( recordsArray ) {
