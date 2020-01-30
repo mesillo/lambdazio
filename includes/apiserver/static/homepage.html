@@ -15,7 +15,7 @@
 				outputZone.innerHTML = "";
 				let output = "<table>";
 				for( streamName of data.response ) {
-					output += `<tr><td><div id="streamname">${streamName}</div></td><td><button onclick="deleteStream('${streamName}')">Delete</button></td><td><button onclick="describeStream('${streamName}')">Describe</button></td><td><button onclick="selectStream('${streamName}')">Select</button></td></tr>`;
+					output += `<tr><td><div id="streamname">${streamName}</div></td><td><button onclick="deleteStream('${streamName}')">Delete</button></td><td><button onclick="clearStream('${streamName}')">Clear</button></td><td><button onclick="describeStream('${streamName}')">Describe</button></td><td><button onclick="selectStream('${streamName}')">Select</button></td></tr>`;
 				}
 				output += "</table>";
 				outputZone.innerHTML = output;
@@ -46,6 +46,18 @@
 				setTimeout(
 					listStreams,
 					1000
+				);
+			}
+			const clearStream = ( streamName ) => {
+				console.info( "=== clearStream ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", `clearStream/${streamName}`, false );
+				xhr.send();
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+				setTimeout(
+					listStreams,
+					1500
 				);
 			}
 			const createStream = ( streamName, shardNum ) => {
