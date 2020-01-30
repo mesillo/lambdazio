@@ -20,6 +20,7 @@
 
 const http = require( "http" );
 const fs = require( "fs" );
+const zlib = require( "zlib" );
 const kinesaliteClient = require( "../kinesalite/kinesaliteClient" );
 
 const Utils = require( "../utils" );
@@ -206,6 +207,31 @@ class ApiServer {
 		} );
 	}
 
+	async _writeStreamGzip( responseBody ) {
+		responseBody.action = "writeStreamGzip";
+		return new Promise( ( resolve, reject ) => {
+			let streamName = responseBody.parameters[1];
+			let partitonKey = responseBody.parameters[2];
+			let data = zlib.gzipSync( responseBody.body );
+			this.kinesa.writeStream(
+				streamName,
+				data,
+				partitonKey,
+			)
+			.then( ( result ) => {
+				responseBody.status = 200;
+				responseBody.response = result;
+				resolve( responseBody );
+			} )
+			.catch( ( error ) => {
+				responseBody.status = 500;
+				responseBody.error = error.message;
+				console.error( error );
+				resolve( responseBody );
+			} );
+		} );
+	}
+
 	async _managePost( request, response ) {
 		let responseBody = {
 			parameters: this._getPostUrl( request ),
@@ -230,6 +256,9 @@ class ApiServer {
 				break;
 			case "writeStream":
 				await this._writeStream( responseBody );
+				break;
+			case "writeStreamGzip":
+				await this._writeStreamGzip( responseBody );
 				break;
 			case "clearStream":
 				await this._clearStream( responseBody );

@@ -69,10 +69,11 @@
 				console.dir( data );
 				listStreams();
 			}
-			const writeStream = ( streamName, shardKey, inputData ) => {
-				console.info( "=== writeStream ===" );
+			const writeStream = ( streamName, shardKey, inputData, useGzip ) => {
+				let action = useGzip ? "writeStreamGzip" : "writeStream";
+				console.info( `=== ${action} ===` );
 				let xhr = new XMLHttpRequest();
-				xhr.open( "POST", `writeStream/${streamName}/${shardKey}`, false );
+				xhr.open( "POST", `${action}/${streamName}/${shardKey}`, false );
 				xhr.send( inputData );
 				let data = JSON.parse( xhr.responseText );
 				console.dir( data );
@@ -90,9 +91,10 @@
 				let streamName = document.getElementById( "writeStreamName" ).value;
 				let shardingKey = document.getElementById( "writeShardKey" ).value;
 				let data = document.getElementById( "writeData" ).value;
+				let useGzip = document.getElementById( "useGzip" ).checked;
 				if( streamName !== "" && shardingKey !== "" && data !== "" ) {
 					//console.log( streamName, shardingKey, data );
-					writeStream( streamName, shardingKey, data );
+					writeStream( streamName, shardingKey, data, useGzip );
 				}
 			}
 			const selectStream = ( streamName ) => {
@@ -217,6 +219,7 @@
 			<button onclick="writeForm()">Insert</button>
 			<br/><label for="writeShardKey">Data:</label><br/>
 			<textarea name="writeData" id="writeData"></textarea>
+			<input type="checkbox" name="useGzip" id="useGzip" value="useGzip"> Use Gzip on payload
 		</div>
 		<hr>
 		<div id="outputZone">
