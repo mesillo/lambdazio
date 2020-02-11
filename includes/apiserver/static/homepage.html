@@ -15,7 +15,7 @@
 				outputZone.innerHTML = "";
 				let output = "<table>";
 				for( streamName of data.response ) {
-					output += `<tr><td><div id="streamname">${streamName}</div></td><td><button onclick="deleteStream('${streamName}')">Delete</button></td><td><button onclick="describeStream('${streamName}')">Describe</button></td><td><button onclick="selectStream('${streamName}')">Select</button></td></tr>`;
+					output += `<tr><td><div id="streamname">${streamName}</div></td><td><button onclick="deleteStream('${streamName}')">Delete</button></td><td><button onclick="clearStream('${streamName}')">Clear</button></td><td><button onclick="describeStream('${streamName}')">Describe</button></td><td><button onclick="selectStream('${streamName}')">Select</button></td></tr>`;
 				}
 				output += "</table>";
 				outputZone.innerHTML = output;
@@ -48,6 +48,18 @@
 					1000
 				);
 			}
+			const clearStream = ( streamName ) => {
+				console.info( "=== clearStream ===" );
+				let xhr = new XMLHttpRequest();
+				xhr.open( "POST", `clearStream/${streamName}`, false );
+				xhr.send();
+				let data = JSON.parse( xhr.responseText );
+				console.dir( data );
+				setTimeout(
+					listStreams,
+					1500
+				);
+			}
 			const createStream = ( streamName, shardNum ) => {
 				console.info( "=== createStream ===" );
 				let xhr = new XMLHttpRequest();
@@ -57,10 +69,11 @@
 				console.dir( data );
 				listStreams();
 			}
-			const writeStream = ( streamName, shardKey, inputData ) => {
-				console.info( "=== writeStream ===" );
+			const writeStream = ( streamName, shardKey, inputData, useGzip ) => {
+				let action = useGzip ? "writeStreamGzip" : "writeStream";
+				console.info( `=== ${action} ===` );
 				let xhr = new XMLHttpRequest();
-				xhr.open( "POST", `writeStream/${streamName}/${shardKey}`, false );
+				xhr.open( "POST", `${action}/${streamName}/${shardKey}`, false );
 				xhr.send( inputData );
 				let data = JSON.parse( xhr.responseText );
 				console.dir( data );
@@ -78,9 +91,10 @@
 				let streamName = document.getElementById( "writeStreamName" ).value;
 				let shardingKey = document.getElementById( "writeShardKey" ).value;
 				let data = document.getElementById( "writeData" ).value;
+				let useGzip = document.getElementById( "useGzip" ).checked;
 				if( streamName !== "" && shardingKey !== "" && data !== "" ) {
 					//console.log( streamName, shardingKey, data );
-					writeStream( streamName, shardingKey, data );
+					writeStream( streamName, shardingKey, data, useGzip );
 				}
 			}
 			const selectStream = ( streamName ) => {
@@ -178,7 +192,6 @@
 			}
 			#streamname {
 				font-weight: bold;
-				text-transform: capitalize;
 				font-size: 2em;
 			}
 			</style>
@@ -205,6 +218,7 @@
 			<button onclick="writeForm()">Insert</button>
 			<br/><label for="writeShardKey">Data:</label><br/>
 			<textarea name="writeData" id="writeData"></textarea>
+			<input type="checkbox" name="useGzip" id="useGzip" value="useGzip"> Use Gzip on payload
 		</div>
 		<hr>
 		<div id="outputZone">

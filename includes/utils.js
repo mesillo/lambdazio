@@ -26,6 +26,12 @@ class Utils {
         );
         console.log( "=======================================================" );
     }
+
+    static timerPromise( millis ) {
+        return new Promise( ( resolve, reject ) => {
+            setTimeout( resolve, millis );
+        } );
+    };
 }
 
 module.exports = Utils;
