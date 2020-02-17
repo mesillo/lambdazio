@@ -3,7 +3,7 @@
 //this file contain bugs
 /**
  * This file is part of Lambdazio.
- * Copyright (C) yyyy  Alberto Mesillo Mesin
+ * Copyright (C) 2020  Alberto Mesillo Mesin
  * Lambdazio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -32,6 +32,19 @@ let options = {
 	functionName : "zipFn"
 };
 
+let printHelp = () => {
+	console.log(
+		"=== Options ===\n",
+		"--zip-file <filename>    mandatory        - the zip file that contain lambda code.\n",
+		"--name <function_name>   mandatory        - the name to assign at the lambda.\n",
+		"--filename <js_filename> default index.js - the javascript filename, in the root directory of zip, that contain the handler function.\n",
+		"--handler <handler_name> default handler  - the name of the exported function that should be used as lambda handler.\n",
+		"--help                                    - print this help. :-)"
+		// TODO: help for fs options...
+	);
+	process.exit( 0 );
+};
+
 if( process.env.hasOwnProperty( "LAMBDA_STORAGE" ) ) {
 	console.info( `Using lambda in ${process.env.LAMBDA_STORAGE}` );
 	options.lbdfs = process.env.LAMBDA_STORAGE;
@@ -43,7 +56,7 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			options.zipName = process.argv[++i];
 			break;
 		case "--lbd-fs":
-			options.lbdfs = process.argv[++i];
+			options.lbdfs = process.argv[++i]; //TODO: this or lambdaFs *
 			break;
 		case "--filename":
 			options.filename = process.argv[++i];
@@ -55,7 +68,11 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			options.functionName = process.argv[++i];
 			break;
 		case "--lambda-storage":
-			options.lambdaFs = process.argv[++i];
+			options.lambdaFs = process.argv[++i]; //TODO: this or lbdfs *
+			break;
+		//// HELP ////
+		case "--help":
+			printHelp();
 			break;
 	}
 }
