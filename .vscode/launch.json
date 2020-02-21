@@ -15,9 +15,9 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "--stream-name",
-                "raw",
+                "${env:STREAMNAME}",
                 "--function-name",
-                "decoders"
+                "${env:FUNCTIONNAME}"
             ]
         }
     ]
