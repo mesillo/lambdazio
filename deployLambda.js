@@ -55,6 +55,7 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 		case "--zip-file":
 			options.zipName = process.argv[++i];
 			break;
+		case "--lambda-storage":
 		case "--lbd-fs":
 			options.lbdfs = process.argv[++i]; //TODO: this or lambdaFs *
 			break;
