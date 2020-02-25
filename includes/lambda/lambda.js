@@ -35,11 +35,16 @@ class Lambda {
 	 * functionName : string;
 	 * streamName : string,
 	 * lambdasStorage : string;
+	 * kinesaPort : string;
 	 * } options 
 	 */
 	static runLambdaProcess ( options ) {
+		let kinesaEndpoint = null;
+		if( options.kinesaPort ) {
+			console.log( "http://localhost:" + parseInt( options.kinesaPort ) );
+		}
 		let lambda = new L2P( options );
-		let stream = new KinesaStream( options.streamName );
+		let stream = new KinesaStream( options.streamName, null, kinesaEndpoint );
 		let batchTransformer = new BatchTransformer( options.streamName );
 		let kinesisHandler = async ( records ) => {
 			let event = batchTransformer.toKinesisEvent( records );

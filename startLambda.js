@@ -27,6 +27,7 @@ const Lambda = require( "./includes/lambda/lambda" );
 let options = {
 	functionName : null,
 	streamName : null,
+	kinesaPort : null,
 	lambdasStorage : __dirname + "/" + configurations.lambdaFs
 };
 
@@ -56,6 +57,9 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			break;
 		case "--lambda-storage":
 			options.lambdasStorage = process.argv[++i];
+			break;
+		case "--kinesa-port":
+			options.kinesaPort = process.argv[++i];
 			break;
 		//// HELP ////
 		case "--help":
