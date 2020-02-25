@@ -29,7 +29,7 @@ let printHelp = () => {
 	console.log(
 		"=== Options ===\n",
 		"--webui-port    <portnum>      - the listening port for web interface.\n",
-		//"--kinesa-port   <portnum>      - the listening port for kinesalite endpoint.\n",
+		"--kinesa-port   <portnum>      - the listening port for kinesalite endpoint.\n",
 		"--help                         - print this help. :-)"
 		// TODO: help for fs options...
 	);
@@ -47,9 +47,9 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 		case "--webui-port":
 			options.webuiPort = process.argv[++i];
 			break;
-		//case "--kinesa-port":
-		//	options.kinesaPort = process.argv[++i];
-		//	break;
+		case "--kinesa-port":
+			options.kinesaPort = process.argv[++i];
+			break;
 		//// HELP ////
 		case "--help":
 			printHelp();
@@ -62,10 +62,10 @@ let kinesaliteServer = kinesalite( {
 	path: __dirname + "/" + configurations.dfFs,
 	createStreamMs: 50
 } );
-let apiServer = new ApiServer( options.webuiPort );
+let apiServer = new ApiServer( options.webuiPort, options.kinesaPort );
 kinesaliteServer.listen( options.kinesaPort, ( error ) => {
 	if( error )
 		throw error;
-	console.info( `Kinesalite started on port ${configurations.kinesaPort}.` );
+	console.info( `Kinesalite started on port ${options.kinesaPort}.` );
 } );
 apiServer.start();
