@@ -40,14 +40,16 @@ class Utils {
 	 */
 	static deleteFolderRecursive( path ) {
 		if( fs.existsSync( path ) ) {
-			fs.readdirSync( path ).forEach( ( file, index ) => {
+			//fs.readdirSync( path ).forEach( ( file, index ) => {
+			let fileList = fs.readdirSync( path ); //.forEach( ( file, index ) => {
+			for( let file of fileList ) {
 				let curPath = path + "/" + file;
 				if( fs.lstatSync( curPath ).isDirectory() ) { // directory => recurse
 					Utils.deleteFolderRecursive( curPath );
 				} else { // file => delete
-					fs.unlinkSync(curPath);
+					fs.unlinkSync( curPath );
 				}
-			} );
+			}// );
 			fs.rmdirSync( path );
 		}
 	}
