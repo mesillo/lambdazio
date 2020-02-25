@@ -21,6 +21,7 @@
 const L2P = require( "../l2p/l2p" );
 const KinesaStream = require( "../kinesalite/kinesaliteStreamClient" );
 const BatchTransformer = require( "../batchTransformer/batchtransformer" );
+const utils = require( "../utils" );
 const fs = require( "fs" );
 const unzipper = require( "unzipper" );
 
@@ -75,10 +76,8 @@ class Lambda {
 	static async _createDestDir( destDir ) {
 		console.info( `Checking ${destDir}...` );
 		if( fs.existsSync( destDir ) ) {
-			fs.rmdirSync(
-				destDir,
-				{ recursive : true }
-			);
+			//fs.rmdirSync( destDir, { recursive : true } );
+			utils.deleteFolderRecursive( destDir );
 			console.info( "... removed!" );
 		} else {
 			console.info( "... not exists!" );
