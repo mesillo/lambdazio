@@ -18,20 +18,41 @@
 
 "use strict";
 
-class Utils {
-    static dirArguments() {
-        console.dir(
-            arguments,
-            { depth : null }
-        );
-        console.log( "=======================================================" );
-    }
+const fs = require( "fs" );
 
-    static timerPromise( millis ) {
-        return new Promise( ( resolve, reject ) => {
-            setTimeout( resolve, millis );
-        } );
-    };
+class Utils {
+	static dirArguments() {
+		console.dir(
+			arguments,
+			{ depth : null }
+		);
+		console.log( "=======================================================" );
+	}
+
+	static timerPromise( millis ) {
+		return new Promise( ( resolve, reject ) => {
+			setTimeout( resolve, millis );
+		} );
+	};
+	/**
+	 * Credit : https://gist.github.com/geedew/cf66b81b0bcdab1f334b#file-node-rm-rf-js
+	 * @param {string} path 
+	 */
+	static deleteFolderRecursive( path ) {
+		if( fs.existsSync( path ) ) {
+			//fs.readdirSync( path ).forEach( ( file, index ) => {
+			let fileList = fs.readdirSync( path ); //.forEach( ( file, index ) => {
+			for( let file of fileList ) {
+				let curPath = path + "/" + file;
+				if( fs.lstatSync( curPath ).isDirectory() ) { // directory => recurse
+					Utils.deleteFolderRecursive( curPath );
+				} else { // file => delete
+					fs.unlinkSync( curPath );
+				}
+			}// );
+			fs.rmdirSync( path );
+		}
+	}
 }
 
 module.exports = Utils;
