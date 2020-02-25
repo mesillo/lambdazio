@@ -67,9 +67,9 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 		case "--name":
 			options.functionName = process.argv[++i];
 			break;
-		case "--lambda-storage":
-			options.lambdaFs = process.argv[++i]; //TODO: this or lbdfs *
-			break;
+		//case "--lambda-storage":
+		//	options.lambdaFs = process.argv[++i]; //TODO: this or lbdfs *
+		//	break;
 		//// HELP ////
 		case "--help":
 			printHelp();
