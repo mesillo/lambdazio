@@ -36,6 +36,7 @@ let printHelp = () => {
 		"=== Options ===\n",
 		"--stream-name <stream_name>     mandatory   - the name of the kinesalite/kinesis stream to use as data source.\n",
 		"--function-name <function_name> mandatory   - the name of lambda function to trigger.\n",
+		"--kinesa-port <portnum>                     - the listening port for kinesalite endpoint.\n",
 		"--help                                      - print this help. :-)"
 		// TODO: help for fs options...
 	);

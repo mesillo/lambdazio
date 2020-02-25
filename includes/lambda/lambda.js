@@ -41,7 +41,7 @@ class Lambda {
 	static runLambdaProcess ( options ) {
 		let kinesaEndpoint = null;
 		if( options.kinesaPort ) {
-			console.log( "http://localhost:" + parseInt( options.kinesaPort ) );
+			kinesaEndpoint = "http://localhost:" + parseInt( options.kinesaPort );
 		}
 		let lambda = new L2P( options );
 		let stream = new KinesaStream( options.streamName, null, kinesaEndpoint );
