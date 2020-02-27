@@ -53,6 +53,22 @@ class Utils {
 			fs.rmdirSync( path );
 		}
 	}
+	/**
+	 * Print a cow that say the provided message
+	 * @param {string} message 
+	 */
+	static printCow( message ) {
+		console.log(
+		" _ ",
+		"| "+ message +" |",
+		" - ",
+		"       \   ^__^",
+		"        \  (oo)\_______",
+		"           (__)\       )\/\\",
+		"               ||----w |",
+		"               ||     ||"
+		);
+	}
 }
 
 module.exports = Utils;
