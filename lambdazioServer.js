@@ -22,7 +22,7 @@
 
 const ApiServer = require( "./includes/apiserver/apiserver" );
 const kinesalite = require( "kinesalite" );
-// const Utils = require( "./includes/utils" ); // TODO: remove...
+const Utils = require( "./includes/utils" );
 const configurations = require( "./etc/config.json" );
 
 let printHelp = () => {
@@ -30,6 +30,7 @@ let printHelp = () => {
 		"=== Options ===\n",
 		"--webui-port    <portnum>      - the listening port for web interface.\n",
 		"--kinesa-port   <portnum>      - the listening port for kinesalite endpoint.\n",
+		"--enable-cow                   - print the Cow.\n",
 		"--help                         - print this help. :-)"
 		// TODO: help for fs options...
 	);
@@ -49,6 +50,10 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			break;
 		case "--kinesa-port":
 			options.kinesaPort = process.argv[++i];
+			break;
+		//// ???? ////
+		case "--enable-cow":
+			Utils.printCow( "Running the server..." );
 			break;
 		//// HELP ////
 		case "--help":

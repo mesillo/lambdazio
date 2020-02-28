@@ -22,6 +22,7 @@
 
 const configurations = require( "./etc/config.json" );
 
+const Utils = require( "./includes/utils" );
 const Lambda = require( "./includes/lambda/lambda" );
 
 let options = {
@@ -39,6 +40,7 @@ let printHelp = () => {
 		"--name <function_name>   mandatory        - the name to assign at the lambda.\n",
 		"--filename <js_filename> default index.js - the javascript filename, in the root directory of zip, that contain the handler function.\n",
 		"--handler <handler_name> default handler  - the name of the exported function that should be used as lambda handler.\n",
+		"--enable-cow                              - print the Cow.\n",
 		"--help                                    - print this help. :-)"
 		// TODO: help for fs options...
 	);
@@ -71,6 +73,10 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 		//case "--lambda-storage":
 		//	options.lambdaFs = process.argv[++i]; //TODO: this or lbdfs *
 		//	break;
+		//// ???? ////
+		case "--enable-cow":
+			Utils.printCow( "Deploy the Lambda code..." );
+			break;
 		//// HELP ////
 		case "--help":
 			printHelp();

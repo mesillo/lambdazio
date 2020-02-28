@@ -22,6 +22,7 @@
 
 const configurations = require( "./etc/config.json" );
 
+const Utils = require( "./includes/utils" );
 const Lambda = require( "./includes/lambda/lambda" );
 
 let options = {
@@ -37,6 +38,7 @@ let printHelp = () => {
 		"--stream-name <stream_name>     mandatory   - the name of the kinesalite/kinesis stream to use as data source.\n",
 		"--function-name <function_name> mandatory   - the name of lambda function to trigger.\n",
 		"--kinesa-port <portnum>                     - the listening port for kinesalite endpoint.\n",
+		"--enable-cow                                - print the Cow.\n",
 		"--help                                      - print this help. :-)"
 		// TODO: help for fs options...
 	);
@@ -61,6 +63,10 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 			break;
 		case "--kinesa-port":
 			options.kinesaPort = process.argv[++i];
+			break;
+		//// ???? ////
+		case "--enable-cow":
+			Utils.printCow( "Running the Lambda code..." );
 			break;
 		//// HELP ////
 		case "--help":
