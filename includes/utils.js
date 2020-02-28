@@ -52,6 +52,37 @@ class Utils {
 			fs.rmdirSync( path );
 		}
 	}
+	/**
+	 * Print a cow that say the provided message
+	 * @param {string} message 
+	 */
+	static printCow( message ) {
+		Utils._printRow( "_", message.length, " _", "_ " );
+		console.log( "| "+ message +" |" );
+		Utils._printRow( "-", message.length, " -", "- " );
+		console.log(
+			"       \\   ^__^\n" +
+			"        \\  (oo)\_______\n" +
+			"           (__)\       )\\/\\\n" +
+			"               ||----w |\n" +
+			"               ||     ||\n"
+		);
+	}
+	/**
+	 * Repeat the repeat params times time. :-P
+	 * Prepend prepend and postpend postpend.
+	 * @param {string} repeat 
+	 * @param {number} times 
+	 * @param {string} prepend 
+	 * @param {string} postpend 
+	 */
+	static _printRow( repeat, times, prepend = "", postpend = "" ) {
+		let repeated = "";
+		for( let i = 0 ; i < times ; i++ ) {
+			repeated += repeat;
+		}
+		console.log( prepend + repeated + postpend );
+	}
 }
 
 module.exports = Utils;
