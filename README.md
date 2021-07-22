@@ -11,7 +11,7 @@ Local Node.js AWS Kinesis->Lambda (stupid) debug tool.
 * function code must be included (dependencies also) on a .zip file.
 * .js file that contains, and export, the handler must be in the root of zip file.
 * if not specified with `--filename \<handlerfilename>` option _index.js_ is asumed as name of the file exporting lambda function handler.
-* if not specified with `--handler \<functionhandlername>` option _handler_ is asumed as name of theexported lambda function handler.
+* if not specified with `--handler \<functionhandlername>` option _handler_ is asumed as name of the exported lambda function handler.
 ```bash
 ./deployLambda.js --zip-file <zipfilename> --name <functionname>
 ```

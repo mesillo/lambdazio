@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Lambdazio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 "use strict";
@@ -23,8 +23,22 @@ const path = require( "path" );
 
 const INVOKE_DELAY = 1000;
 const INVOKE_RETRY = 10;
+/**
+ * A empty options structure.
+ */
+const baseOptions = {
+	functionName : null, // string - name
+	streamName : null, // string - name
+	kinesaPort : null, // string - number
+	lambdasStorage : null // string - path
+};
 
 class Lambda2Process {
+	/**
+	 * Constructor: accept a options object.
+	 * @throws {Error}
+	 * @param {Object} options 
+	 */
 	constructor( options ) {// TODO: check the order of the functions (CWD management)...
 		if( ! options )
 			throw new Error( "Configurations needed!" );
@@ -84,7 +98,10 @@ class Lambda2Process {
 			throw new Error( "Not yet initialized." );
 		return this.handler;
 	}
-
+	/**
+	 * Sleep for INVOKE_DELAY millis.
+	 * @async
+	 */
 	_retryInvokeSleep() {
 		return new Promise( ( resolve ) => {
 			setTimeout( resolve, INVOKE_DELAY );
@@ -117,6 +134,18 @@ class Lambda2Process {
 			}
 		}
 		throw lastError;
+	}
+	/**
+	 * Return a options structure to be popolated.
+	 * @returns {Object} options.
+	 * @static
+	 */
+	static getAOptionsObject() {
+		return JSON.parse(
+			JSON.stringify(
+				baseOptions
+			)
+		);
 	}
 }
 

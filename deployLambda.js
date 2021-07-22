@@ -15,13 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Lambdazio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 "use strict";
 
 const configurations = require( "./etc/config.json" );
 
+const Utils = require( "./includes/utils" );
 const Lambda = require( "./includes/lambda/lambda" );
 
 let options = {
@@ -39,6 +40,7 @@ let printHelp = () => {
 		"--name <function_name>   mandatory        - the name to assign at the lambda.\n",
 		"--filename <js_filename> default index.js - the javascript filename, in the root directory of zip, that contain the handler function.\n",
 		"--handler <handler_name> default handler  - the name of the exported function that should be used as lambda handler.\n",
+		"--enable-cow                              - print the Cow.\n",
 		"--help                                    - print this help. :-)"
 		// TODO: help for fs options...
 	);
@@ -55,6 +57,7 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 		case "--zip-file":
 			options.zipName = process.argv[++i];
 			break;
+		case "--lambda-storage":
 		case "--lbd-fs":
 			options.lbdfs = process.argv[++i]; //TODO: this or lambdaFs *
 			break;
@@ -67,8 +70,12 @@ for( let i = 0  ; i < process.argv.length ; i++ ) {
 		case "--name":
 			options.functionName = process.argv[++i];
 			break;
-		case "--lambda-storage":
-			options.lambdaFs = process.argv[++i]; //TODO: this or lbdfs *
+		//case "--lambda-storage":
+		//	options.lambdaFs = process.argv[++i]; //TODO: this or lbdfs *
+		//	break;
+		//// ???? ////
+		case "--enable-cow":
+			Utils.printCow( "Deploy the Lambda code..." );
 			break;
 		//// HELP ////
 		case "--help":

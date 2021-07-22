@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Lambdazio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 "use strict";
@@ -40,8 +40,7 @@ class Utils {
 	 */
 	static deleteFolderRecursive( path ) {
 		if( fs.existsSync( path ) ) {
-			//fs.readdirSync( path ).forEach( ( file, index ) => {
-			let fileList = fs.readdirSync( path ); //.forEach( ( file, index ) => {
+			let fileList = fs.readdirSync( path );
 			for( let file of fileList ) {
 				let curPath = path + "/" + file;
 				if( fs.lstatSync( curPath ).isDirectory() ) { // directory => recurse
@@ -49,7 +48,7 @@ class Utils {
 				} else { // file => delete
 					fs.unlinkSync( curPath );
 				}
-			}// );
+			}
 			fs.rmdirSync( path );
 		}
 	}

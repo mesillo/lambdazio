@@ -1,9 +1,10 @@
 {
   "name": "lambdazio",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "description": "node lambda handler runner",
   "main": "app.js",
   "scripts": {
+    "start": "node lambdazioServer.js",
     "test": "echo \"Not yet implemented! :-(\" && exit 255"
   },
   "bin": {

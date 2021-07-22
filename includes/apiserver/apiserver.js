@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Lambdazio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 "use strict";
@@ -28,12 +28,16 @@ const Utils = require( "../utils" );
 const configurations = require( "../../etc/config.json" );
 
 class ApiServer {
-	constructor( port = configurations.apiPort ) {
+	constructor( port = configurations.apiPort, kinesaPort = null ) {
 		this.port = port;
+		let kinesaEndpoint = null;
 		this.server = http.createServer( ( req, res ) => {
 			this._requestManager( req, res );
 		} );
-		this.kinesa = new kinesaliteClient(); // TODO: use the conf, Luke!
+		if( kinesaPort ) {
+			kinesaEndpoint = "http://localhost:" + parseInt( kinesaPort );
+		}
+		this.kinesa = new kinesaliteClient( kinesaEndpoint ); // TODO: use the conf, Luke!
 	}
 
 	start() {

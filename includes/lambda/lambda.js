@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Lambdazio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 "use strict";
@@ -35,11 +35,16 @@ class Lambda {
 	 * functionName : string;
 	 * streamName : string,
 	 * lambdasStorage : string;
+	 * kinesaPort : string;
 	 * } options 
 	 */
 	static runLambdaProcess ( options ) {
+		let kinesaEndpoint = null;
+		if( options.kinesaPort ) {
+			kinesaEndpoint = "http://localhost:" + parseInt( options.kinesaPort );
+		}
 		let lambda = new L2P( options );
-		let stream = new KinesaStream( options.streamName );
+		let stream = new KinesaStream( options.streamName, null, kinesaEndpoint );
 		let batchTransformer = new BatchTransformer( options.streamName );
 		let kinesisHandler = async ( records ) => {
 			let event = batchTransformer.toKinesisEvent( records );
